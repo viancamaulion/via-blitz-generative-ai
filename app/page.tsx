@@ -146,6 +146,16 @@ Need to know if you'll need an umbrella or sunglasses today?—just ask for the 
             <div className='absolute bottom-full left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none'></div>
             <form
               onSubmit={(e) => {
+                let input = value.trim()
+
+                // Convert `/weather Manila` → "Get weather for Manila"
+                if (input.toLowerCase().startsWith("/weather ")) {
+                  const city = input.slice(9).trim()
+                  // Use a more direct prompt that the model will recognize as a weather query
+                  const weatherQuery = `Get weather for ${city}`
+                  input = weatherQuery
+                }
+
                 if (files) {
                   handleSubmit(e, { experimental_attachments: files })
                 } else {
