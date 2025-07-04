@@ -16,8 +16,15 @@ export default function Chat() {
   const [files, setFiles] = useState<FileList | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+
+  const initialMessage = `Hi! I'm Sunny, your daily weather buddy.
+Need to know if you'll need an umbrella or sunglasses today?—just ask for the forecast! ☀️🌧️`
+
   const { messages, handleInputChange, handleSubmit, isLoading } = useChat({
     api: "/api/chat",
+    initialMessages:[
+      {content: initialMessage, role: 'assistant', id: 'welcome-message'}
+    ],
     body: { model: selectedModel },
   })
 
@@ -73,6 +80,14 @@ export default function Chat() {
               case "user":
                 return (
                   <UserMessage
+                    message={message.content}
+                    attachments={message.experimental_attachments}
+                  />
+                )
+
+              case "assistant":
+                return (
+                  <BotMessage
                     message={message.content}
                     attachments={message.experimental_attachments}
                   />

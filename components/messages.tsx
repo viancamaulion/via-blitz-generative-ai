@@ -160,7 +160,7 @@ export function BotMessage({ message, attachments }: MessageProps) {
   return (
     <div className='flex mb-4 w-full'>
       <Avatar className='w-8 h-8 mr-2 mt-2'>
-        <AvatarFallback>B</AvatarFallback>
+        <AvatarFallback>S</AvatarFallback>
       </Avatar>
       <Card className='sm:max-w-[70%] w-full'>
         <CardContent className='p-3'>
