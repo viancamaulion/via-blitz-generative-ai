@@ -76,6 +76,8 @@ Need to know if you'll need an umbrella or sunglasses today?—just ask for the 
         </div>
         <div className='flex-grow overflow-y-auto px-4'>
           {messages.map((message, index) => {
+            const isLastMessage = index === messages.length - 1 && message.role === 'assistant'
+
             switch (message.role) {
               case "user":
                 return (
@@ -88,8 +90,10 @@ Need to know if you'll need an umbrella or sunglasses today?—just ask for the 
               case "assistant":
                 return (
                   <BotMessage
+                    key={message.id}
                     message={message.content}
                     attachments={message.experimental_attachments}
+                    isTyping={isLoading && isLastMessage}
                   />
                 )
               default:

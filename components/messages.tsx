@@ -15,6 +15,7 @@ function MessageContent({ message }: { message: string }) {
 interface MessageProps {
   message: string
   attachments?: Attachment[]
+  isTyping?: boolean
 }
 
 export function UserMessage({ message, attachments }: MessageProps) {
@@ -156,7 +157,7 @@ function ImageWithLoaderAndDownload({
   )
 }
 
-export function BotMessage({ message, attachments }: MessageProps) {
+export function BotMessage({ message, attachments, isTyping }: MessageProps) {
   return (
     <div className='flex mb-4 w-full'>
       <Avatar className='w-8 h-8 mr-2 mt-2'>
@@ -164,7 +165,17 @@ export function BotMessage({ message, attachments }: MessageProps) {
       </Avatar>
       <Card className='sm:max-w-[70%] w-full'>
         <CardContent className='p-3'>
-          <MessageContent message={message} />
+          {isTyping ? (
+            <div className="whitespace-pre-wrap rounded-lg rounded-tl-none text-blue-500 p-4">
+            <div className="flex gap-1">
+              <span className="animate-pulse">●</span>
+              <span className="animation-delay-200 animate-pulse">●</span>
+              <span className="animation-delay-400 animate-pulse">●</span>
+            </div>
+          </div>
+          ) : (
+            <MessageContent message={message} />
+          )}
           {attachments && attachments.length > 0 && (
             <div className='flex flex-col gap-4 mt-2'>
               {attachments.map((attachment, idx) =>
