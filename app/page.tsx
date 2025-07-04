@@ -16,8 +16,15 @@ export default function Chat() {
   const [files, setFiles] = useState<FileList | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+
+  const initialMessage = `Hi! I'm Sunny, your daily weather buddy.
+Need to know if you'll need an umbrella or sunglasses today?—just ask for the forecast! ☀️🌧️`
+
   const { messages, handleInputChange, handleSubmit, isLoading } = useChat({
     api: "/api/chat",
+    initialMessages:[
+      {content: initialMessage, role: 'assistant', id: 'welcome-message'}
+    ],
     body: { model: selectedModel },
   })
 
@@ -69,12 +76,24 @@ export default function Chat() {
         </div>
         <div className='flex-grow overflow-y-auto px-4'>
           {messages.map((message, index) => {
+            const isLastMessage = index === messages.length - 1 && message.role === 'assistant'
+
             switch (message.role) {
               case "user":
                 return (
                   <UserMessage
                     message={message.content}
                     attachments={message.experimental_attachments}
+                  />
+                )
+
+              case "assistant":
+                return (
+                  <BotMessage
+                    key={message.id}
+                    message={message.content}
+                    attachments={message.experimental_attachments}
+                    isTyping={isLoading && isLastMessage}
                   />
                 )
               default:
@@ -127,6 +146,16 @@ export default function Chat() {
             <div className='absolute bottom-full left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none'></div>
             <form
               onSubmit={(e) => {
+                let input = value.trim()
+
+                // Convert `/weather Manila` → "Get weather for Manila"
+                if (input.toLowerCase().startsWith("/weather ")) {
+                  const city = input.slice(9).trim()
+                  // Use a more direct prompt that the model will recognize as a weather query
+                  const weatherQuery = `Get weather for ${city}`
+                  input = weatherQuery
+                }
+
                 if (files) {
                   handleSubmit(e, { experimental_attachments: files })
                 } else {

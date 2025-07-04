@@ -8,12 +8,20 @@ export const getWeather = tool({
   }),
   execute: async ({ location }: { location: string }) => {
     console.log(`[getWeather tool] Used for location: ${location}`)
-    // TODO: Implement actual weather API call
-    const weatherData = {
-      location,
-      temperature: 10 + Math.floor(Math.random() * 23), // random temp in Celsius for demo
+    try {
+      // TODO: Implement actual weather API call
+      const weatherData = {
+        location,
+        temperature: 10 + Math.floor(Math.random() * 23), // random temp in Celsius for demo
+        conditions: ['sunny', 'cloudy', 'rainy', 'partly cloudy'][Math.floor(Math.random() * 4)],
+        humidity: 30 + Math.floor(Math.random() * 70),
+        windSpeed: 5 + Math.floor(Math.random() * 20),
+        timestamp: new Date().toISOString()
+      };
+      return weatherData;
+    } catch (error) {
+      return `I couldn't get the weather for ${location}. Please try again later.`;
     }
-    return `The current weather in ${location} is ${weatherData.temperature}.`
   },
 })
 

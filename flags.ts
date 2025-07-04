@@ -4,5 +4,5 @@ export const MODEL_OPTIONS = [
 ]
 
 export function getDefaultModel(): string {
-  return MODEL_OPTIONS[0].value
+  return MODEL_OPTIONS[1].value
 }
