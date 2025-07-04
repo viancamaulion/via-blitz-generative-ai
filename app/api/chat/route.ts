@@ -12,7 +12,7 @@ import { generateImage } from "@/app/tools/generateImage"
  * @param file - The uploaded file object containing a name and base64 content.
  * @returns The absolute path to the saved file on disk.
  */
-export async function uploadHelper(file: { name: string; content: string }) {
+async function uploadHelper(file: { name: string; content: string }) {
   const path = `/tmp/${Date.now()}_${file.name.replace(
     /[^a-zA-Z0-9_.-]/g,
     "_"
