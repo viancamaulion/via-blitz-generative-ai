@@ -92,7 +92,17 @@ export async function POST(req: Request) {
       const result = streamText({
         model: registry.languageModel(selectedModel),
         messages: convertToCoreMessages(outgoingMessages),
-        tools: { getWeather, fileReader, generateImage },
+        tools: { 
+          getWeather: {
+            ...getWeather,
+            execute: async (params: { location: string }, context: any) => {
+              const result = await getWeather.execute(params, context);
+              return result;
+            }
+          },
+          fileReader,
+          generateImage 
+        },
         toolChoice: "auto",
       })
       return result.toDataStreamResponse()
